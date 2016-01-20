@@ -16,6 +16,31 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/newCategory", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/newCategory.vtl");
+
+      model.put("categories", Category.all());
+
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/categoryList", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+     model.put("template", "templates/categoryList.vtl");
+
+    Category category = new Category(request.queryParams("name"));
+    category.save();
+
+
+      model.put("category", category);
+      model.put("categories", Category.all());
+    return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
+
+    
+
   }
+
+
 }
-	
