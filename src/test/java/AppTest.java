@@ -20,7 +20,7 @@ public class AppTest extends FluentTest {
   @Test
     public void rootTest() {
       goTo("http://localhost:4567/");
-      assertThat(pageSource()).contains("");
+      assertThat(pageSource()).contains("To-Do list builder");
     }
 
   @Test
@@ -34,8 +34,9 @@ public class AppTest extends FluentTest {
 
   @Test
   public void categoryIsDisplayedTest() {
-    Category myCategory = new Category("Household chores");
-    String categoryPath = String.format("http://localhost:4567/%d", myCategory.getId());
+    Category newCategory = new Category("Household chores");
+    newCategory.save();
+    String categoryPath = String.format("http://localhost:4567/%d", newCategory.getId());
     goTo(categoryPath);
     assertThat(pageSource()).contains("Household chores");
   }

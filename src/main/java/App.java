@@ -19,26 +19,30 @@ public class App {
     get("/newCategory", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/newCategory.vtl");
-
       model.put("categories", Category.all());
-
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
     post("/categoryList", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-     model.put("template", "templates/categoryList.vtl");
+      model.put("template", "templates/categoryList.vtl");
 
-    Category category = new Category(request.queryParams("name"));
-    category.save();
-
+      Category category = new Category(request.queryParams("name"));
+      category.save();
 
       model.put("category", category);
       model.put("categories", Category.all());
-    return new ModelAndView(model, layout);
-  }, new VelocityTemplateEngine());
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
-    
+    get("/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/categoryDetail.vtl");
+
+      model.put("category", Category.find(Integer.parseInt(request.params(":id"))));
+
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
   }
 

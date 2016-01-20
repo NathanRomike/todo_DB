@@ -1,10 +1,10 @@
 <br>
-<br>
 <div class="jumbotron">
-
-
-#foreach ($category in $categories)
-    <p>$category.getId() $category.getName()</p>
-#end
-
+  <h1>Categories:</h1>
+  <br>
+  #foreach ($category in $categories)
+    <ul>
+      <a href="$category.getId()">$category.getName()</a>
+    </ul>
+  #end
 </div>
