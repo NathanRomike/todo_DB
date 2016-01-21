@@ -40,4 +40,18 @@ public class AppTest extends FluentTest {
     goTo(categoryPath);
     assertThat(pageSource()).contains("Household chores");
   }
+
+  @Test
+  public void allTasksDisplayDescriptionOnCategoryPage() {
+    Category myCategory = new Category ("Household chores");
+    myCategory.save();
+    Task firstTask = new Task("Mow the lawn", myCategory.getId());
+    firstTask.save();
+    Task secondTask = new Task("Homework", myCategory.getId());
+    secondTask.save();
+    String categoryPath = String.format("http://localhost:4567/%d", myCategory.getId());
+    goTo(categoryPath);
+    assertThat(pageSource()).contains("Mow the lawn");
+    assertThat(pageSource()).contains("Homework");
+  }
 }

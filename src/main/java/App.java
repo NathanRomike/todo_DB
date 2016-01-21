@@ -39,8 +39,32 @@ public class App {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/categoryDetail.vtl");
 
-      model.put("category", Category.find(Integer.parseInt(request.params(":id"))));
+      model.put("category", Category.find(Integer.parseInt(request.params("id"))));
 
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/:id/newTask", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/newTask.vtl");
+      model.put("category", Category.find(Integer.parseInt(request.params("id"))));
+      model.put("tasks", Task.all());
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/:id/categoryTasks", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      System.out.println(request.queryParams("categoryId"));
+      Category category = Category.find(Integer.parseInt(request.params("id")));
+      Integer categoryId = category.getId();
+
+      String description = request.queryParams("newTask");
+
+      Task newTask = new Task(description, categoryId);
+      newTask.save();
+
+      model.put("task", newTask);
+      model.put("template", "templates/categoryTasks.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
